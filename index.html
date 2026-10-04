@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Running Local News | Independent New York City news</title>
+<meta name="description" content="Running Local is an independent New York City newsroom. Short vertical video reports that trace public decisions to the New Yorkers who feel them.">
+<meta property="og:title" content="Running Local News">
+<meta property="og:description" content="Independent New York City news, in short vertical video.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://runninglocalnews.com/">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="preload" href="./anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face{font-family:'Anton';font-weight:400;font-display:swap;src:url(./anton-latin-400-normal.woff2) format('woff2')}
+  @font-face{font-family:'Inter';font-weight:400;font-display:swap;src:url(./inter-latin-400-normal.woff2) format('woff2')}
+  @font-face{font-family:'Inter';font-weight:500;font-display:swap;src:url(./inter-latin-500-normal.woff2) format('woff2')}
+  @font-face{font-family:'Inter';font-weight:700;font-display:swap;src:url(./inter-latin-700-normal.woff2) format('woff2')}
+  @font-face{font-family:'Inter';font-weight:800;font-display:swap;src:url(./inter-latin-800-normal.woff2) format('woff2')}
+  :root{
+    --yellow:#FCCC0A; --black:#000; --white:#fff; --red:#EE352E;
+    --paper:#F4F1EA; --asphalt:#2F363D;
+    --display:'Anton',Impact,'Arial Narrow',sans-serif;
+    --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    --pad:clamp(16px,4vw,48px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--sans);color:var(--black);background:var(--paper);line-height:1.5;font-size:17px}
+  a{color:inherit}
+  img,svg{display:block;max-width:100%}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+
+  /* Header: station-sign bar */
+  header.sign{background:var(--yellow)}
+  header.sign .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+  header.sign .logo{height:44px;width:auto}
+  header.sign nav{display:flex;gap:22px;font-weight:700;font-size:15px}
+  header.sign nav a{text-decoration:none}
+  header.sign nav a:hover{text-decoration:underline;text-underline-offset:4px}
+
+  /* Hero on subway tile */
+  .band{height:clamp(52px,6vw,84px);background:#1a1a1a url(./band.jpg) left center/auto 100% repeat-x}
+  .hero{background:#e6dccb url(./tile.jpg) center top/cover no-repeat;border-bottom:6px solid var(--black)}
+  .hero .wrap{padding-top:clamp(48px,7vw,88px);padding-bottom:clamp(56px,8vw,100px)}
+  .kicker{display:inline-block;background:var(--black);color:var(--yellow);font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;margin-bottom:22px}
+  .hero h1{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(44px,7.4vw,96px);line-height:1.14;letter-spacing:.005em;max-width:14ch}
+  .hero h1 .hl{background:linear-gradient(transparent 6%,var(--yellow) 6%,var(--yellow) 96%,transparent 96%);box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:0 .1em}
+  .hero p.lede{font-size:clamp(18px,2.1vw,22px);font-weight:500;max-width:36ch;margin-top:24px}
+  .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+  .btn{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:16px;text-decoration:none;padding:15px 22px;border:3px solid var(--black)}
+  .btn.primary{background:var(--black);color:var(--yellow)}
+  .btn.secondary{background:var(--yellow);color:var(--black)}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--black)}
+  .btn.primary:hover{box-shadow:4px 4px 0 var(--red)}
+
+  /* Rail graphic */
+  .rail{height:14px;width:100%}
+
+  section{padding:clamp(56px,8vw,96px) 0}
+  h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(36px,5vw,56px);line-height:1;margin-bottom:14px}
+  .sect-lede{max-width:56ch;font-size:18px;margin-bottom:36px}
+
+  /* Coverage */
+  .coverage{background:var(--yellow)}
+  .beats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .beat{background:var(--black);color:var(--white);padding:26px 24px 28px}
+  .beat .stop{display:flex;align-items:center;gap:10px;color:var(--yellow);font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+  .beat .stop i{width:14px;height:14px;border-radius:50%;background:var(--red);border:3px solid var(--white);flex:none}
+  .beat h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:32px;line-height:1.05;margin-bottom:10px}
+  .beat p{color:#d9d9d9;font-size:16px}
+
+  /* Stories */
+  .stories{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:22px}
+  .story{background:var(--white);border:3px solid var(--black);display:flex;flex-direction:column;text-decoration:none;transition:transform .12s, box-shadow .12s}
+  .story:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--black)}
+  .story .top{background:var(--yellow);padding:10px 16px 8px;border-bottom:3px solid var(--black)}
+  .story .body{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
+  .story .dateline{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--asphalt);margin-bottom:10px}
+  .story h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:30px;line-height:1.02;margin-bottom:12px}
+  .story p{font-size:15.5px;color:#222;flex:1}
+  .story .watch{margin-top:16px;font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px}
+  .story .watch b{color:var(--red)}
+  .more{margin-top:30px}
+
+  /* About */
+  .about{background:var(--asphalt);color:var(--white)}
+  .about .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start}
+  .about h2{color:var(--yellow)}
+  .about p{font-size:18px;margin-bottom:16px;color:#eef0f2}
+  .standards{list-style:none;border-top:3px solid var(--yellow)}
+  .standards li{padding:16px 0 16px 34px;border-bottom:1px solid rgba(255,255,255,.18);position:relative;font-size:16.5px}
+  .standards li::before{content:"";position:absolute;left:4px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 3px var(--asphalt),0 0 0 5px var(--yellow)}
+  .standards strong{color:var(--yellow)}
+
+  /* Contact */
+  footer{background:var(--black);color:var(--white)}
+  footer .top{padding-top:clamp(56px,8vw,90px);padding-bottom:44px}
+  footer h2{color:var(--yellow)}
+  .contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:26px}
+  .contact a{display:block;text-decoration:none;border:2px solid #444;padding:18px 20px}
+  .contact a:hover{border-color:var(--yellow)}
+  .contact small{display:block;color:#aaa;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+  .contact span{font-weight:700;font-size:18px;word-break:break-word}
+  .bottom{padding-top:22px;padding-bottom:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:#aaa}
+  .bottom .mark{display:flex;align-items:center;gap:12px;color:var(--white);font-weight:700}
+  .bottom .mark svg{width:36px;height:36px}
+
+  @media (max-width:760px){
+    header.sign nav{display:none}
+    header.sign .logo{height:34px}
+    .about .grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header class="sign">
+  <div class="wrap">
+    <a href="/" aria-label="Running Local News home"><img class="logo" src="./logo-horizontal.svg" alt="Running Local"></a>
+    <nav aria-label="Main">
+      <a href="#stories">Stories</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="band" role="presentation"></div>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <span class="kicker">Independent New York City news</span>
+    <h1 id="hero-title">Public decisions, <span class="hl">traced to the New Yorkers</span> who feel them.</h1>
+    <p class="lede">Short vertical video reports on transit, City Hall and the neighborhoods. Reported on the street, sourced in every caption.</p>
+    <div class="btns">
+      <a class="btn primary" href="https://www.instagram.com/runninglocalnews/" rel="noopener">Watch on Instagram →</a>
+      <a class="btn secondary" href="https://www.facebook.com/profile.php?id=61594596424504" rel="noopener">Facebook</a>
+    </div>
+  </div>
+</section>
+
+<section class="coverage" aria-labelledby="cov-title">
+  <div class="wrap">
+    <h2 id="cov-title">What we cover</h2>
+    <p class="sect-lede">Every story answers one question: why should a New Yorker care about this today?</p>
+    <div class="beats">
+      <div class="beat">
+        <div class="stop"><i></i>Line 1</div>
+        <h3>Transit &amp; streets</h3>
+        <p>The MTA, buses, bikes and the rules that decide how New Yorkers get around.</p>
+      </div>
+      <div class="beat">
+        <div class="stop"><i></i>Line 2</div>
+        <h3>City Hall</h3>
+        <p>The Council, city agencies and the mandates, fines and hearings that come out of them.</p>
+      </div>
+      <div class="beat">
+        <div class="stop"><i></i>Line 3</div>
+        <h3>Neighborhoods</h3>
+        <p>Public health, schools, labor and life in all five boroughs, from the people living it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stories" aria-labelledby="stories-title">
+  <div class="wrap">
+    <h2 id="stories-title">Recent stories</h2>
+    <p class="sect-lede">Each report runs about two minutes or less. Sources are listed in every post.</p>
+    <div class="stories">
+
+      <a class="story" href="https://www.instagram.com/runninglocalnews/reel/DeFKhSVhxFw/" rel="noopener">
+        <div class="top"><svg class="rail" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="7" x2="300" y2="7" stroke="#000" stroke-width="3"/><circle cx="40" cy="7" r="5" fill="#000"/><circle cx="110" cy="7" r="5.5" fill="#EE352E" stroke="#000" stroke-width="2"/><circle cx="180" cy="7" r="5" fill="#000"/><circle cx="250" cy="7" r="5" fill="#000"/></svg></div>
+        <div class="body">
+          <div class="dateline">City Hall · October 2026</div>
+          <h3>Nine hours on bikes</h3>
+          <p>The City Council met for nine hours on e-bikes. Citi Bike riders paying more weren't part of the conversation.</p>
+          <div class="watch">Watch <b>→</b></div>
+        </div>
+      </a>
+
+      <a class="story" href="https://www.instagram.com/runninglocalnews/reel/DdmtyDEhP3B/" rel="noopener">
+        <div class="top"><svg class="rail" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="7" x2="300" y2="7" stroke="#000" stroke-width="3"/><circle cx="40" cy="7" r="5" fill="#000"/><circle cx="110" cy="7" r="5.5" fill="#EE352E" stroke="#000" stroke-width="2"/><circle cx="180" cy="7" r="5" fill="#000"/><circle cx="250" cy="7" r="5" fill="#000"/></svg></div>
+        <div class="body">
+          <div class="dateline">Citywide · Two-part series</div>
+          <h3>The MTA's OMNY Fiasco</h3>
+          <p>Why won't the MTA let riders board through the back door of a local bus? Parts I and II.</p>
+          <div class="watch">Watch Part I <b>→</b></div>
+        </div>
+      </a>
+
+      <a class="story" href="https://www.instagram.com/runninglocalnews/p/Ddww3UDluvx/" rel="noopener">
+        <div class="top"><svg class="rail" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="7" x2="300" y2="7" stroke="#000" stroke-width="3"/><circle cx="40" cy="7" r="5" fill="#000"/><circle cx="110" cy="7" r="5.5" fill="#EE352E" stroke="#000" stroke-width="2"/><circle cx="180" cy="7" r="5" fill="#000"/><circle cx="250" cy="7" r="5" fill="#000"/></svg></div>
+        <div class="body">
+          <div class="dateline">Melrose &amp; Morrisania, Bronx · September 2026</div>
+          <h3>A Legionnaires' cluster</h3>
+          <p>Rooftop cooling towers tested positive for Legionella after the city reported a rise in cases in the South Bronx.</p>
+          <div class="watch">Read <b>→</b></div>
+        </div>
+      </a>
+
+      <a class="story" href="https://www.instagram.com/runninglocalnews/reel/Dd4RpLthWZe/" rel="noopener">
+        <div class="top"><svg class="rail" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="7" x2="300" y2="7" stroke="#000" stroke-width="3"/><circle cx="40" cy="7" r="5" fill="#000"/><circle cx="110" cy="7" r="5.5" fill="#EE352E" stroke="#000" stroke-width="2"/><circle cx="180" cy="7" r="5" fill="#000"/><circle cx="250" cy="7" r="5" fill="#000"/></svg></div>
+        <div class="body">
+          <div class="dateline">Hunts Point, Bronx · September 2026</div>
+          <h3>Electric trucks at the fish market</h3>
+          <p>City Harvest put three electric trucks into service at the Fulton Fish Market.</p>
+          <div class="watch">Watch <b>→</b></div>
+        </div>
+      </a>
+
+      <a class="story" href="https://www.instagram.com/runninglocalnews/reel/DdpRU9ThtXS/" rel="noopener">
+        <div class="top"><svg class="rail" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="7" x2="300" y2="7" stroke="#000" stroke-width="3"/><circle cx="40" cy="7" r="5" fill="#000"/><circle cx="110" cy="7" r="5.5" fill="#EE352E" stroke="#000" stroke-width="2"/><circle cx="180" cy="7" r="5" fill="#000"/><circle cx="250" cy="7" r="5" fill="#000"/></svg></div>
+        <div class="body">
+          <div class="dateline">Jackson Heights, Queens · September 2026</div>
+          <h3>The Momo Crawl in Little Tibet</h3>
+          <p>Visiting Tibet takes a visa, a permit and a government-approved guide. Visiting Little Tibet takes a momo pass.</p>
+          <div class="watch">Watch <b>→</b></div>
+        </div>
+      </a>
+
+      <a class="story" href="https://www.instagram.com/runninglocalnews/p/DdhPufRFrmL/" rel="noopener">
+        <div class="top"><svg class="rail" viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="7" x2="300" y2="7" stroke="#000" stroke-width="3"/><circle cx="40" cy="7" r="5" fill="#000"/><circle cx="110" cy="7" r="5.5" fill="#EE352E" stroke="#000" stroke-width="2"/><circle cx="180" cy="7" r="5" fill="#000"/><circle cx="250" cy="7" r="5" fill="#000"/></svg></div>
+        <div class="body">
+          <div class="dateline">Chelsea, Manhattan · September 2026</div>
+          <h3>$8 for one notebook</h3>
+          <p>Prices are up, and some New York City high school seniors are paying for their own supplies.</p>
+          <div class="watch">Read <b>→</b></div>
+        </div>
+      </a>
+
+    </div>
+    <div class="more"><a class="btn secondary" href="https://www.instagram.com/runninglocalnews/" rel="noopener">All stories on Instagram →</a></div>
+  </div>
+</section>
+
+<section id="about" class="about" aria-labelledby="about-title">
+  <div class="wrap grid">
+    <div>
+      <h2 id="about-title">About Running Local</h2>
+      <p>Running Local is an independent New York City newsroom. We make short vertical video reports that follow a public decision, such as a fare change, a Council hearing or a city mandate, to the people it affects.</p>
+      <p>Our stories are built for Instagram first and made to be understood with the sound off.</p>
+    </div>
+    <ul class="standards">
+      <li><strong>Sourced.</strong> Every claim is backed by a document, record or interview, and sources are listed with each post.</li>
+      <li><strong>Independent.</strong> Running Local is not affiliated with any political party, campaign or advocacy group.</li>
+      <li><strong>Funding.</strong> Running Local is independently funded and does not accept money from the people or organizations it covers.</li>
+      <li><strong>Corrections.</strong> If we get something wrong, we fix it and say so. Write to hello@runninglocalnews.com.</li>
+    </ul>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap top">
+    <h2>See something? Say something.</h2>
+    <p class="sect-lede" style="color:#ddd;margin-bottom:0">Story tips, corrections and press inquiries.</p>
+    <div class="contact">
+      <a href="mailto:hello@runninglocalnews.com"><small>Email</small><span>hello@runninglocalnews.com</span></a>
+      <a href="tel:+16467052068"><small>Phone</small><span>(646) 705-2068</span></a>
+      <a href="https://www.instagram.com/runninglocalnews/" rel="noopener"><small>Instagram</small><span>@runninglocalnews</span></a>
+    </div>
+  </div>
+  <div class="wrap bottom">
+    <div class="mark">
+      <svg viewBox="0 0 1000 1000" aria-hidden="true"><circle cx="500" cy="500" r="500" fill="#FCCC0A"/><line x1="0" y1="500" x2="1000" y2="500" stroke="#000" stroke-width="50"/><circle cx="220" cy="500" r="102" fill="#FCCC0A"/><circle cx="220" cy="500" r="80" fill="#000"/><circle cx="500" cy="500" r="102" fill="#FCCC0A"/><circle cx="500" cy="500" r="70.4" fill="#EE352E" stroke="#000" stroke-width="19.2"/><circle cx="780" cy="500" r="102" fill="#FCCC0A"/><circle cx="780" cy="500" r="80" fill="#000"/></svg>
+      Running Local News
+    </div>
+    <div>© 2026 Running Local News · New York, NY</div>
+  </div>
+</footer>
+
+</body>
+</html>
